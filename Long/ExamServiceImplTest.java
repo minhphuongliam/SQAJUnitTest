@@ -1,5 +1,6 @@
 package com.thanhtam.backend;
 
+// Import necessary classes and services for unit testing
 import com.thanhtam.backend.dto.AnswerSheet;
 import com.thanhtam.backend.dto.ChoiceCorrect;
 import com.thanhtam.backend.dto.ChoiceList;
@@ -36,6 +37,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+// Enable Mockito support for dependency injection
 @ExtendWith(MockitoExtension.class)
 public class ExamServiceImplTest {
 
@@ -57,21 +59,26 @@ public class ExamServiceImplTest {
     @Mock
     private ChoiceService choiceService;
 
+    // Inject mocks into the service being tested
     @InjectMocks
     private ExamServiceImpl examService;
 
     private Exam exam;
 
+    // Common setup for each test
     @BeforeEach
     void setUp() {
+        // Initializes a sample Exam object before each test
         exam = new Exam();
         exam.setId(1L);
         exam.setTitle("Test Exam");
     }
 
+    // Test saving a new exam
     @Test
     @DisplayName("5_1")
     void saveNewExam_L5_1() {
+        // Test saving a new Exam object using the service layer
         Exam newExam = new Exam();
         newExam.setTitle("New Exam");
         when(examRepository.save(newExam)).thenReturn(exam);
@@ -82,9 +89,11 @@ public class ExamServiceImplTest {
         verify(examRepository, times(1)).save(newExam);
     }
 
+    // Test updating an existing exam
     @Test
     @DisplayName("L5_2")
     void updateExistingExam_5_2() {
+        // Test updating an existing exam entity
         exam.setTitle("Updated Exam");
         when(examRepository.save(exam)).thenReturn(exam);
 
@@ -94,9 +103,11 @@ public class ExamServiceImplTest {
         verify(examRepository, times(1)).save(exam);
     }
 
+    // Test retrieving all exams with pagination
     @Test
     @DisplayName("5_3")
     void findAllExamsWithPagination_5_3() {
+        // Test retrieving paginated list of exams
         Pageable pageable = Pageable.ofSize(10).withPage(0);
         List<Exam> exams = Arrays.asList(exam);
         Page<Exam> examPage = new PageImpl<>(exams, pageable, exams.size());
@@ -109,17 +120,21 @@ public class ExamServiceImplTest {
         verify(examRepository, times(1)).findAll(pageable);
     }
 
+    // Test canceling an exam by ID
     @Test
     @DisplayName("5_4")
     void cancelExam_5_4() {
+        // Verifies that the cancelExam method properly calls repository method
         Long examId = 1L;
         examService.cancelExam(examId);
         verify(examRepository, times(1)).cancelExam(examId);
     }
 
+    // Test retrieving all exams without pagination
     @Test
     @DisplayName("5_5")
     void getAllExams_5_5() {
+        // Test retrieving all exams from the repository
         List<Exam> exams = Arrays.asList(exam);
         when(examRepository.findAll()).thenReturn(exams);
 
@@ -129,9 +144,11 @@ public class ExamServiceImplTest {
         verify(examRepository, times(1)).findAll();
     }
 
+    // Test retrieving an exam by ID (found)
     @Test
     @DisplayName("5_6")
     void getExamById_5_6() {
+        // Test retrieving an exam by its ID when the exam exists
         Long examId = 10L;
         when(examRepository.findById(examId)).thenReturn(Optional.of(exam));
 
@@ -142,9 +159,11 @@ public class ExamServiceImplTest {
         verify(examRepository, times(1)).findById(examId);
     }
 
+    // Test retrieving an exam by ID (not found)
     @Test
     @DisplayName("5_7")
     void getExamByIdNotFound_5_7() {
+        // Test retrieving an exam by ID when it does not exist
         Long examId = 13L;
         when(examRepository.findById(examId)).thenReturn(Optional.empty());
 
@@ -154,9 +173,11 @@ public class ExamServiceImplTest {
         verify(examRepository, times(1)).findById(examId);
     }
 
+    // Test retrieving exams by the creator's username
     @Test
     @DisplayName("5_8")
     void findAllByCreatedByUsername_5_8() {
+        // Test retrieving paginated exams created by a specific user
         Pageable pageable = Pageable.ofSize(10).withPage(0);
         String username = "teacher1";
         List<Exam> exams = Arrays.asList(exam);
@@ -173,6 +194,10 @@ public class ExamServiceImplTest {
     @Test
     @DisplayName("5_9")
     void getChoiceList_ProcessTFCorrect_5_9() {
+
+        // Test for True/False question type with correct selected answer
+        // Verifies that the correct choice is marked and point is assigned
+
         // Arrange
         AnswerSheet userAnswer = new AnswerSheet();
         userAnswer.setQuestionId(1L);
@@ -222,6 +247,10 @@ public class ExamServiceImplTest {
     @Test
     @DisplayName("5_10")
     void getChoiceList_ProcessTFFail_5_10() {
+        
+        // Test for True/False question type with incorrect answer selected
+        // Verifies that the answer is marked incorrect
+        
         // Arrange
         AnswerSheet userAnswer = new AnswerSheet();
         userAnswer.setQuestionId(1L);
@@ -271,6 +300,9 @@ public class ExamServiceImplTest {
     @Test
     @DisplayName("5_11")
     void getChoiceList_ProcessMCCorrect_5_11() {
+        // Test for Multiple Choice question with correct answer selected
+        // Should mark the question as correctly answered
+        
         // Arrange
         AnswerSheet userAnswer = new AnswerSheet();
         userAnswer.setQuestionId(1L);
@@ -320,6 +352,9 @@ public class ExamServiceImplTest {
     @Test
     @DisplayName("5_12")
     void getChoiceList_ProcessMCIncorrect_5_12() {
+        // Test for Multiple Choice with incorrect selection
+        // Should result in an incorrect answer flag
+
         // Arrange
         AnswerSheet userAnswer = new AnswerSheet();
         userAnswer.setQuestionId(1L);
@@ -369,6 +404,9 @@ public class ExamServiceImplTest {
     @Test
     @DisplayName("5_13")
     void getChoiceList_ProcessMSCorrect_5_13() {
+        // Test for Multiple Select (MS) where the student correctly selects all correct answers
+        // Should be marked as correct
+        
         // Arrange
         AnswerSheet userAnswer = new AnswerSheet();
         userAnswer.setQuestionId(1L);
@@ -418,6 +456,9 @@ public class ExamServiceImplTest {
     @Test
     @DisplayName("5_14")
     void getChoiceList_ProcessMSIncorrect_5_14() {
+        // Test for Multiple Select (MS) with partial or incorrect selections
+        // Should be marked as incorrect
+        
         // Arrange
         AnswerSheet userAnswer = new AnswerSheet();
         userAnswer.setQuestionId(1L);
@@ -467,6 +508,9 @@ public class ExamServiceImplTest {
     @Test
     @DisplayName("5_15")
     void getChoiceList_InvalidQuestionType_5_15() {
+        // Test for invalid or null question type
+        // Should throw NullPointerException or handle appropriately
+        
         // Arrange
         AnswerSheet userAnswer = new AnswerSheet();
         userAnswer.setQuestionId(1L);

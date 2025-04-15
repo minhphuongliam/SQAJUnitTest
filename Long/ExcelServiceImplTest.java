@@ -36,6 +36,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
+/**
+ * Unit test class for ExcelServiceImpl to test reading/writing Excel files and database insertion
+ */
 @ExtendWith(MockitoExtension.class)
 public class ExcelServiceImplTest {
 
@@ -50,11 +53,12 @@ public class ExcelServiceImplTest {
     @Mock
     private IntakeService intakeService;
 
-    @InjectMocks // Removed @Spy to avoid problems with private methods
+    @InjectMocks 
     private ExcelServiceImpl excelService;
 
     private String excelFilePath;
 
+    // Setup executed before each test case
     @BeforeEach
     void setUp() {
         excelFilePath = "test.xlsx";
@@ -64,6 +68,7 @@ public class ExcelServiceImplTest {
     @DisplayName("7_1")
     void readUserFromExcelFile_xlsx_ValidRoles_7_1() throws IOException {
                 // Mock Excel file reading
+                // Simulate reading mock Excel content as byte stream
                 String mockExcelContent = "Username,Email,FirstName,LastName,IntakeCode,Role\n" +
                 "testuser1,test1@example.com,John,Doe,ITC1,ADMIN\n" +
                 "testuser2,test2@example.com,Jane,Smith,ITC2,LECTURER\n" +
@@ -102,18 +107,22 @@ public class ExcelServiceImplTest {
         studentRole.setName(ERole.ROLE_STUDENT);
         when(roleService.findByName(ERole.ROLE_STUDENT)).thenReturn(Optional.of(studentRole));
 
+        // Execute
         List<User> userList = excelService.readUserFromExcelFile(excelFilePath);
-
+        
+        // Validate that roles are correctly assigned
         assertEquals(3, userList.size());
         assertEquals(ERole.ROLE_ADMIN, userList.get(0).getRoles().stream().findFirst().get().getName());
         assertEquals(ERole.ROLE_LECTURER, userList.get(1).getRoles().stream().findFirst().get().getName());
         assertEquals(ERole.ROLE_STUDENT, userList.get(2).getRoles().stream().findFirst().get().getName());
     }
 
+    // Test reading a .xls file (HSSF)
     @Test
     @DisplayName("7_2")
     void readUserFromExcelFile_xls_7_2() throws IOException {
         //SETUP
+        // Simulated content for old format Excel file
         String mockExcelContent = "Username,Email,FirstName,LastName,IntakeCode,Role\n" +
                 "testuser1,test1@example.com,John,Doe,ITC1,ADMIN\n" +
                 "testuser2,test2@example.com,Jane,Smith,ITC2,LECTURER\n" +
@@ -163,6 +172,7 @@ public class ExcelServiceImplTest {
         assertEquals(ERole.ROLE_STUDENT, userList.get(2).getRoles().stream().findFirst().get().getName());
     }
 
+    // Test reading from unsupported file type
     @Test
     @DisplayName("7_3")
     void readUserFromExcelFile_InvalidFileFormat_7_3() {
@@ -173,6 +183,7 @@ public class ExcelServiceImplTest {
         });
     }
 
+    // Test behavior when an invalid role is found in file
     @Test
     @DisplayName("7_4")
     void readUserFromExcelFile_InvalidRole_Default_7_4() throws IOException {
@@ -212,6 +223,7 @@ public class ExcelServiceImplTest {
         assertEquals(ERole.ROLE_STUDENT, userList.get(0).getRoles().stream().findFirst().get().getName());
     }
 
+    // Test mapping of profile information from Excel
     @Test
     @DisplayName("7_5")
     void readUserFromExcelFile_ProfileAssignment_7_5() throws IOException {
@@ -252,6 +264,7 @@ public class ExcelServiceImplTest {
         assertEquals("Doe", userList.get(0).getProfile().getLastName());
     }
 
+    // Test writing users to Excel file
     @Test
     @DisplayName("7_6")
     void writeUserToExcelFile_7_6() throws IOException {
@@ -268,6 +281,7 @@ public class ExcelServiceImplTest {
         file.delete();
     }
 
+    // Test writing an empty user list to Excel file
     @Test
     @DisplayName("7_7")
     void writeUserToExcelFile_EmptyList_7_7() throws IOException {
@@ -281,6 +295,7 @@ public class ExcelServiceImplTest {
         file.delete();
     }
 
+    // Test IOException when writing to Excel file
     @Test
     @DisplayName("7_8")
     void writeUserToExcelFile_IOException_7_8() throws IOException {
@@ -294,6 +309,7 @@ public class ExcelServiceImplTest {
         });
     }
 
+    // Test inserting new user to DB
     @Test
     @DisplayName("7_9")
     void insertUserToDB_NewUser_7_9() {
@@ -307,6 +323,7 @@ public class ExcelServiceImplTest {
         verify(userRepository, times(1)).save(user);
     }
 
+    // Test inserting existing user should be skipped
     @Test
     @DisplayName("7_10")
     void insertUserToDB_ExistingUser_7_10() {
@@ -321,6 +338,7 @@ public class ExcelServiceImplTest {
         verify(userRepository, never()).save(user);
     }
 
+    // Test exception caught silently while inserting existing user
     @Test
     @DisplayName("7_11")
     void insertUserToDB_ExceptionCaught_7_11() {
@@ -331,5 +349,6 @@ public class ExcelServiceImplTest {
         when(userRepository.existsByEmailOrUsername(user.getEmail(), user.getUsername())).thenReturn(true);
 
         excelService.InsertUserToDB(Arrays.asList(user));
+        // No assertion here as exception is handled silently inside the service
     }
 }

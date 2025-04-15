@@ -23,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.*;
 
+// Enable Mockito for this test class
 @ExtendWith(MockitoExtension.class)
 public class ExamUserServiceImplTest {
 
@@ -39,6 +40,7 @@ public class ExamUserServiceImplTest {
     private User user1;
     private User user2;
 
+    // Initialize test data
     @BeforeEach
     void setUp() {
         exam = new Exam();
@@ -54,6 +56,7 @@ public class ExamUserServiceImplTest {
         user2.setUsername("user2");
     }
 
+    // Test creating ExamUser for a list of users
     @Test
     @DisplayName("6_1")
     void createExamUser_6_1() {
@@ -78,6 +81,7 @@ public class ExamUserServiceImplTest {
         verify(examUserRepository, times(1)).saveAll(anyList());
     }
 
+    // Test creating ExamUser with an empty list - should not call save
     @Test
     @DisplayName("6_2")
     void createExamUser_EmptyUserSet_6_2() {
@@ -86,6 +90,7 @@ public class ExamUserServiceImplTest {
         verify(examUserRepository, never()).saveAll(anyList());
     }
 
+    // Test retrieving exams by username where exam is not cancelled
     @Test
     @DisplayName("6_3")
     void getExamListByUsername_6_3() {
@@ -102,6 +107,7 @@ public class ExamUserServiceImplTest {
         verify(examUserRepository, times(1)).findAllByUser_UsernameAndExam_Canceled(username, false);
     }
 
+    // Test finding an ExamUser by exam ID and username
     @Test
     @DisplayName("6_4")
     void findByExamAndUser_6_4() {
@@ -117,6 +123,7 @@ public class ExamUserServiceImplTest {
         verify(examUserRepository, times(1)).findByExam_IdAndUser_Username(examId, username);
     }
 
+    // Test updating ExamUser
     @Test
     @DisplayName("6_5")
     void updateExamUser_6_5() {
@@ -128,6 +135,7 @@ public class ExamUserServiceImplTest {
         verify(examUserRepository, times(1)).save(examUser);
     }
 
+    // Test finding ExamUser by ID when it exists
     @Test
     @DisplayName("6_6")
     void findExamUserById_Exists_6_6() {
@@ -143,6 +151,7 @@ public class ExamUserServiceImplTest {
         verify(examUserRepository, times(1)).findById(id);
     }
 
+    // Test finding ExamUser by ID when it does not exist
     @Test
     @DisplayName("6_7")
     void findExamUserById_NotExists_6_7() {
@@ -156,6 +165,7 @@ public class ExamUserServiceImplTest {
         verify(examUserRepository, times(1)).findById(id);
     }
 
+    // Test getting completed exams with total point > -1
     @Test
     @DisplayName("6_8")
     void getCompleteExams_6_8() {
@@ -173,6 +183,7 @@ public class ExamUserServiceImplTest {
         verify(examUserRepository, times(1)).findAllByExam_Part_Course_IdAndUser_UsernameAndTotalPointIsGreaterThan(courseId, username, -1.0);
     }
 
+    // Test finding all ExamUser by exam ID
     @Test
     @DisplayName("6_9")
     void findAllByExamId_6_9() {
@@ -189,6 +200,7 @@ public class ExamUserServiceImplTest {
         verify(examUserRepository, times(1)).findAllByExam_Id(examId);
     }
 
+    // Test finding ExamUsers who have finished an exam
     @Test
     @DisplayName("6_10")
     void findExamUsersByIsFinishedIsTrueAndExam_Id_6_10() {
