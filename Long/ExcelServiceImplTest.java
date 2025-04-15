@@ -61,8 +61,8 @@ public class ExcelServiceImplTest {
     }
 
     @Test
-    @DisplayName("L3_1")
-    void readUserFromExcelFile_xlsx_ValidRoles_L3_1() throws IOException {
+    @DisplayName("7_1")
+    void readUserFromExcelFile_xlsx_ValidRoles_7_1() throws IOException {
                 // Mock Excel file reading
                 String mockExcelContent = "Username,Email,FirstName,LastName,IntakeCode,Role\n" +
                 "testuser1,test1@example.com,John,Doe,ITC1,ADMIN\n" +
@@ -111,8 +111,8 @@ public class ExcelServiceImplTest {
     }
 
     @Test
-    @DisplayName("L3_2")
-    void readUserFromExcelFile_xls_L3_2() throws IOException {
+    @DisplayName("7_2")
+    void readUserFromExcelFile_xls_7_2() throws IOException {
         //SETUP
         String mockExcelContent = "Username,Email,FirstName,LastName,IntakeCode,Role\n" +
                 "testuser1,test1@example.com,John,Doe,ITC1,ADMIN\n" +
@@ -164,8 +164,8 @@ public class ExcelServiceImplTest {
     }
 
     @Test
-    @DisplayName("L3_3")
-    void readUserFromExcelFile_InvalidFileFormat_L3_3() {
+    @DisplayName("7_3")
+    void readUserFromExcelFile_InvalidFileFormat_7_3() {
         String filePath = "test.txt";
 
         assertThrows(IllegalArgumentException.class, () -> {
@@ -174,8 +174,8 @@ public class ExcelServiceImplTest {
     }
 
     @Test
-    @DisplayName("L3_4")
-    void readUserFromExcelFile_InvalidRole_Default_L3_4() throws IOException {
+    @DisplayName("7_4")
+    void readUserFromExcelFile_InvalidRole_Default_7_4() throws IOException {
         // Mock Excel file reading
         String mockExcelContent = "Username,Email,FirstName,LastName,IntakeCode,Role\n" +
                 "testuser1,test1@example.com,John,Doe,ITC1,UNKNOWN";
@@ -213,8 +213,8 @@ public class ExcelServiceImplTest {
     }
 
     @Test
-    @DisplayName("L3_5")
-    void readUserFromExcelFile_ProfileAssignment_L3_5() throws IOException {
+    @DisplayName("7_5")
+    void readUserFromExcelFile_ProfileAssignment_7_5() throws IOException {
         // Mock Excel file reading
         String mockExcelContent = "Username,Email,FirstName,LastName,IntakeCode,Role\n" +
                 "testuser1,test1@example.com,John,Doe,ITC1,STUDENT";
@@ -253,8 +253,8 @@ public class ExcelServiceImplTest {
     }
 
     @Test
-    @DisplayName("L3_6")
-    void writeUserToExcelFile_L3_6() throws IOException {
+    @DisplayName("7_6")
+    void writeUserToExcelFile_7_6() throws IOException {
         List<UserExport> userExports = new ArrayList<>();
         userExports.add(new UserExport("testuser", "test@example.com", "John", "Doe"));
 
@@ -269,8 +269,8 @@ public class ExcelServiceImplTest {
     }
 
     @Test
-    @DisplayName("L3_7")
-    void writeUserToExcelFile_EmptyList_L3_7() throws IOException {
+    @DisplayName("7_7")
+    void writeUserToExcelFile_EmptyList_7_7() throws IOException {
         List<UserExport> userExports = new ArrayList<>();
 
         excelService.writeUserToExcelFile((ArrayList<UserExport>) userExports);
@@ -282,8 +282,8 @@ public class ExcelServiceImplTest {
     }
 
     @Test
-    @DisplayName("L3_8")
-    void writeUserToExcelFile_IOException_L3_8() throws IOException {
+    @DisplayName("7_8")
+    void writeUserToExcelFile_IOException_7_8() throws IOException {
         List<UserExport> userExports = new ArrayList<>();
         userExports.add(new UserExport("testuser", "test@example.com", "John", "Doe"));
     
@@ -295,8 +295,8 @@ public class ExcelServiceImplTest {
     }
 
     @Test
-    @DisplayName("L3_9")
-    void insertUserToDB_NewUser_L3_9() {
+    @DisplayName("7_9")
+    void insertUserToDB_NewUser_7_9() {
         User user = new User();
         user.setUsername("newuser");
         user.setEmail("new@example.com");
@@ -308,8 +308,8 @@ public class ExcelServiceImplTest {
     }
 
     @Test
-    @DisplayName("L3_10")
-    void insertUserToDB_ExistingUser_L3_10() {
+    @DisplayName("7_10")
+    void insertUserToDB_ExistingUser_7_10() {
         User user = new User();
         user.setUsername("existinguser");
         user.setEmail("existing@example.com");
@@ -322,8 +322,8 @@ public class ExcelServiceImplTest {
     }
 
     @Test
-    @DisplayName("L3_11")
-    void insertUserToDB_ExceptionCaught_L3_11() {
+    @DisplayName("7_11")
+    void insertUserToDB_ExceptionCaught_7_11() {
         User user = new User();
         user.setUsername("existinguser");
         user.setEmail("existing@example.com");

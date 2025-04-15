@@ -70,8 +70,8 @@ public class ExamServiceImplTest {
     }
 
     @Test
-    @DisplayName("L1_1")
-    void saveNewExam_L1_1() {
+    @DisplayName("5_1")
+    void saveNewExam_L5_1() {
         Exam newExam = new Exam();
         newExam.setTitle("New Exam");
         when(examRepository.save(newExam)).thenReturn(exam);
@@ -83,8 +83,8 @@ public class ExamServiceImplTest {
     }
 
     @Test
-    @DisplayName("L1_2")
-    void updateExistingExam_L1_2() {
+    @DisplayName("L5_2")
+    void updateExistingExam_5_2() {
         exam.setTitle("Updated Exam");
         when(examRepository.save(exam)).thenReturn(exam);
 
@@ -95,8 +95,8 @@ public class ExamServiceImplTest {
     }
 
     @Test
-    @DisplayName("L1_3")
-    void findAllExamsWithPagination_L1_3() {
+    @DisplayName("5_3")
+    void findAllExamsWithPagination_5_3() {
         Pageable pageable = Pageable.ofSize(10).withPage(0);
         List<Exam> exams = Arrays.asList(exam);
         Page<Exam> examPage = new PageImpl<>(exams, pageable, exams.size());
@@ -110,16 +110,16 @@ public class ExamServiceImplTest {
     }
 
     @Test
-    @DisplayName("L1_4")
-    void cancelExam_L1_4() {
+    @DisplayName("5_4")
+    void cancelExam_5_4() {
         Long examId = 1L;
         examService.cancelExam(examId);
         verify(examRepository, times(1)).cancelExam(examId);
     }
 
     @Test
-    @DisplayName("L1_5")
-    void getAllExams_L1_5() {
+    @DisplayName("5_5")
+    void getAllExams_5_5() {
         List<Exam> exams = Arrays.asList(exam);
         when(examRepository.findAll()).thenReturn(exams);
 
@@ -130,8 +130,8 @@ public class ExamServiceImplTest {
     }
 
     @Test
-    @DisplayName("L1_6")
-    void getExamById_L1_6() {
+    @DisplayName("5_6")
+    void getExamById_5_6() {
         Long examId = 10L;
         when(examRepository.findById(examId)).thenReturn(Optional.of(exam));
 
@@ -143,8 +143,8 @@ public class ExamServiceImplTest {
     }
 
     @Test
-    @DisplayName("L1_7")
-    void getExamByIdNotFound_L1_7() {
+    @DisplayName("5_7")
+    void getExamByIdNotFound_5_7() {
         Long examId = 13L;
         when(examRepository.findById(examId)).thenReturn(Optional.empty());
 
@@ -155,8 +155,8 @@ public class ExamServiceImplTest {
     }
 
     @Test
-    @DisplayName("L1_8")
-    void findAllByCreatedByUsername_L1_8() {
+    @DisplayName("5_8")
+    void findAllByCreatedByUsername_5_8() {
         Pageable pageable = Pageable.ofSize(10).withPage(0);
         String username = "teacher1";
         List<Exam> exams = Arrays.asList(exam);
@@ -171,8 +171,8 @@ public class ExamServiceImplTest {
     }
 
     @Test
-    @DisplayName("L1_9")
-    void getChoiceList_ProcessTFCorrect_L1_9() {
+    @DisplayName("5_9")
+    void getChoiceList_ProcessTFCorrect_5_9() {
         // Arrange
         AnswerSheet userAnswer = new AnswerSheet();
         userAnswer.setQuestionId(1L);
@@ -220,8 +220,8 @@ public class ExamServiceImplTest {
     }
 
     @Test
-    @DisplayName("L1_10")
-    void getChoiceList_ProcessTFFail_L1_10() {
+    @DisplayName("5_10")
+    void getChoiceList_ProcessTFFail_5_10() {
         // Arrange
         AnswerSheet userAnswer = new AnswerSheet();
         userAnswer.setQuestionId(1L);
@@ -269,8 +269,8 @@ public class ExamServiceImplTest {
     }
 
     @Test
-    @DisplayName("L1_11")
-    void getChoiceList_ProcessMCCorrect_L1_11() {
+    @DisplayName("5_11")
+    void getChoiceList_ProcessMCCorrect_5_11() {
         // Arrange
         AnswerSheet userAnswer = new AnswerSheet();
         userAnswer.setQuestionId(1L);
@@ -318,8 +318,8 @@ public class ExamServiceImplTest {
     }
 
     @Test
-    @DisplayName("L1_12")
-    void getChoiceList_ProcessMCIncorrect_L1_12() {
+    @DisplayName("5_12")
+    void getChoiceList_ProcessMCIncorrect_5_12() {
         // Arrange
         AnswerSheet userAnswer = new AnswerSheet();
         userAnswer.setQuestionId(1L);
@@ -367,8 +367,8 @@ public class ExamServiceImplTest {
     }
 
     @Test
-    @DisplayName("L1_13")
-    void getChoiceList_ProcessMSCorrect_L1_13() {
+    @DisplayName("5_13")
+    void getChoiceList_ProcessMSCorrect_5_13() {
         // Arrange
         AnswerSheet userAnswer = new AnswerSheet();
         userAnswer.setQuestionId(1L);
@@ -416,8 +416,8 @@ public class ExamServiceImplTest {
     }
 
     @Test
-    @DisplayName("L1_14")
-    void getChoiceList_ProcessMSIncorrect_L1_14() {
+    @DisplayName("5_14")
+    void getChoiceList_ProcessMSIncorrect_5_14() {
         // Arrange
         AnswerSheet userAnswer = new AnswerSheet();
         userAnswer.setQuestionId(1L);
@@ -465,8 +465,8 @@ public class ExamServiceImplTest {
     }
 
     @Test
-    @DisplayName("L1_15")
-    void getChoiceList_InvalidQuestionType_L1_15() {
+    @DisplayName("5_15")
+    void getChoiceList_InvalidQuestionType_5_15() {
         // Arrange
         AnswerSheet userAnswer = new AnswerSheet();
         userAnswer.setQuestionId(1L);

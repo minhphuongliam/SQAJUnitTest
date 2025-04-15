@@ -55,8 +55,8 @@ public class ExamUserServiceImplTest {
     }
 
     @Test
-    @DisplayName("L2_1")
-    void createExamUser_L2_1() {
+    @DisplayName("6_1")
+    void createExamUser_6_1() {
         List<User> userSet = Arrays.asList(user1, user2);
         examUserService.create(exam, userSet);
 
@@ -79,16 +79,16 @@ public class ExamUserServiceImplTest {
     }
 
     @Test
-    @DisplayName("L2_2")
-    void createExamUser_EmptyUserSet_L2_2() {
+    @DisplayName("6_2")
+    void createExamUser_EmptyUserSet_6_2() {
         List<User> userSet = new ArrayList<>();
         examUserService.create(exam, userSet);
         verify(examUserRepository, never()).saveAll(anyList());
     }
 
     @Test
-    @DisplayName("L2_3")
-    void getExamListByUsername_L2_3() {
+    @DisplayName("6_3")
+    void getExamListByUsername_6_3() {
         String username = "john";
         ExamUser examUser1 = new ExamUser();
         ExamUser examUser2 = new ExamUser();
@@ -103,8 +103,8 @@ public class ExamUserServiceImplTest {
     }
 
     @Test
-    @DisplayName("L2_4")
-    void findByExamAndUser_L2_4() {
+    @DisplayName("6_4")
+    void findByExamAndUser_6_4() {
         Long examId = 1L;
         String username = "john";
         ExamUser examUser = new ExamUser();
@@ -118,8 +118,8 @@ public class ExamUserServiceImplTest {
     }
 
     @Test
-    @DisplayName("L2_5")
-    void updateExamUser_L2_5() {
+    @DisplayName("6_5")
+    void updateExamUser_6_5() {
         ExamUser examUser = new ExamUser();
         examUser.setTotalPoint(10.0);
 
@@ -129,8 +129,8 @@ public class ExamUserServiceImplTest {
     }
 
     @Test
-    @DisplayName("L2_6")
-    void findExamUserById_Exists_L2_6() {
+    @DisplayName("6_6")
+    void findExamUserById_Exists_6_6() {
         Long id = 10L;
         ExamUser examUser = new ExamUser();
 
@@ -144,8 +144,8 @@ public class ExamUserServiceImplTest {
     }
 
     @Test
-    @DisplayName("L2_7")
-    void findExamUserById_NotExists_L2_7() {
+    @DisplayName("6_7")
+    void findExamUserById_NotExists_6_7() {
         Long id = 999L;
 
         when(examUserRepository.findById(id)).thenReturn(Optional.empty());
@@ -157,8 +157,8 @@ public class ExamUserServiceImplTest {
     }
 
     @Test
-    @DisplayName("L2_8")
-    void getCompleteExams_L2_8() {
+    @DisplayName("6_8")
+    void getCompleteExams_6_8() {
         Long courseId = 2L;
         String username = "john";
         ExamUser examUser1 = new ExamUser();
@@ -174,8 +174,8 @@ public class ExamUserServiceImplTest {
     }
 
     @Test
-    @DisplayName("L2_9")
-    void findAllByExamId_L2_9() {
+    @DisplayName("6_9")
+    void findAllByExamId_6_9() {
         Long examId = 1L;
         ExamUser examUser1 = new ExamUser();
         ExamUser examUser2 = new ExamUser();
@@ -190,8 +190,8 @@ public class ExamUserServiceImplTest {
     }
 
     @Test
-    @DisplayName("L2_10")
-    void findExamUsersByIsFinishedIsTrueAndExam_Id_L2_10() {
+    @DisplayName("6_10")
+    void findExamUsersByIsFinishedIsTrueAndExam_Id_6_10() {
         Long examId = 1L;
         ExamUser examUser1 = new ExamUser();
         ExamUser examUser2 = new ExamUser();
