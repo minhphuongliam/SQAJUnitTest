@@ -1,0 +1,14 @@
+3	Read Excel file	ExcelServiceImpl	readUserFromExcelFile()	L3.1	Successfully read .xlsx file with all valid roles	if file ends with xlsx, switch(role) → ADMIN, LECTURER, default	Valid .xlsx file with user data rows	List<User> size > 0 with correct roles assigned	
+				L3.2	Successfully read .xls file	file ends with xls	Valid .xls format file	List<User> created	
+				L3.3	Invalid file format throws exception	if not ends with xlsx or xls	File named abc.txt	Throw IllegalArgumentException	
+				L3.4	Role is invalid in column 5, falls into default	switch(role) → default	Role column = UNKNOWN	Default role is set to ROLE_STUDENT	
+				L3.5	Ensure profile assignment from columns 2 and 3 is working correctly	case 2 and case 3	Name columns filled	User has profile with correct first name and last name	
+	Export users to Excel		writeUserToExcelFile()	L3.6	Successfully write user list to Excel	try (Workbook workbook = new XSSFWorkbook()) without exception	List<UserExport> with data	Creates users.xlsx file with correct number of rows/columns	
+				L3.7	Input is empty, no users to export	userExports.isEmpty()	Empty list	File contains headers only, no user data	
+				L3.8	IOException occurs during file write	catch(IOException e)	Simulate error (e.g., permission)	Exception is caught and logged, no crash	
+	Insert user to DB		InsertUserToDB()	L3.9	Insert new user if not already present in DB	if userRepository.existsByEmailOrUsername(...) == false	New user	"Saved via repo
+userRepository.save(user) is called"	
+				L3.10	Do not insert user if email or username already exists and 	existsByEmailOrUsername(...) == true, Exception thrown	User with existing email/username	Exception is thrown and caught; user is not saved	
+				L3.11	Ensure catch block executes correctly	Exception is caught after throw new Exception(...)	User with existing email/username	Stack trace is printed by e.printStackTrace()	
+	Get cell value		getCellValue()						
+	Read workbook by type		getWorkbook()						
