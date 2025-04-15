@@ -8,9 +8,16 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.Path;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.nio.file.*;
+import java.util.stream.Stream;
+import java.util.Date;
+import java.util.Comparator;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,20 +31,19 @@ public class FileStorageServiceImplTest {
     Path tempDir;
 
     @BeforeEach
-    void init() throws IOException {
+    void setup() throws IOException {
+        // Create temp test folders inside JUnit's tempDir
+        Path testRoot = tempDir.resolve("uploads");
+        Path testExcel = tempDir.resolve("excel-import-user");
+
+        // Clean if needed (not strictly required since tempDir is fresh each time)
+        clearDirectory(testRoot);
+        clearDirectory(testExcel);
+
+        Files.createDirectories(testRoot);
+        Files.createDirectories(testExcel);
+
         filesStorageService = new FilesStorageServiceImpl() {
-            private final Path testRoot = tempDir.resolve("uploads");
-            private final Path testExcel = tempDir.resolve("excel-import-user");
-
-            {
-                // Tạo folder giả
-                Files.createDirectories(testRoot);
-                Files.createDirectories(testExcel);
-
-                // Gán lại giá trị root và excelPath qua reflection hack (nếu muốn)
-                // Nhưng đơn giản nhất là override lại các method cần dùng
-            }
-
             @Override
             public void initRootFolder() {
                 try {
@@ -69,7 +75,7 @@ public class FileStorageServiceImplTest {
             @Override
             public void deleteAllUserExcel(String fileName) throws IOException {
                 try {
-                    Files.delete(testExcel.resolve(fileName));
+                    Files.deleteIfExists(testExcel.resolve(fileName));
                 } catch (IOException e) {
                     throw new RuntimeException("Failed to delete file", e);
                 }
@@ -86,7 +92,7 @@ public class FileStorageServiceImplTest {
                 }
             }
 
-            // Helper accessors if needed in test
+            // Optional: if needed by some test cases
             public Path getTestRoot() {
                 return testRoot;
             }
@@ -94,7 +100,26 @@ public class FileStorageServiceImplTest {
             public Path getTestExcel() {
                 return testExcel;
             }
+
+            @Override
+            public void save(MultipartFile file, String filePath) {
+                try {
+                    String fileName = new Date().getTime() + "-" + file.getOriginalFilename();
+                    Files.copy(file.getInputStream(), testRoot.resolve(file.getOriginalFilename()));
+                } catch (Exception e) {
+                    throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
+                }
+            }
         };
+    }
+
+    void clearDirectory(Path path) throws IOException {
+        if (Files.exists(path)) {
+            Files.walk(path)
+                    .sorted(Comparator.reverseOrder())
+                    .map(Path::toFile)
+                    .forEach(File::delete);
+        }
     }
 
     // --- Test case 3.1: Create root folder if not exists ---
