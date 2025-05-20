@@ -429,7 +429,7 @@ public class FileStorageServiceImplTest {
     // and verify that `deleteAllUserExcel()` wraps it into a `RuntimeException`.
     @Test
     @DisplayName("3.19 - deleteAllUserExcel should throw RuntimeException when deletion fails")
-    void testDeleteAllUserExcel_shouldThrowWhenFail() throws IOException {
+    void testDeleteAllUserExcel_shouldThrowWhenFail() throws IOException, InterruptedException, RuntimeException {
         // Arrange: Create a directory and a file that will simulate a locked state
         Path excelPath = tempDir.resolve("excel-import-user");
         Files.createDirectories(excelPath);
