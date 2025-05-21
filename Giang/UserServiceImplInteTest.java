@@ -78,20 +78,23 @@ public class UserServiceImplInteTest {
     void _11_20_updateUser() {
         String username = generateUniqueUsername("update");
 
+        // Step 1: Create & save the original user
         User user = new User();
         user.setUsername(username);
         user.setEmail("old@example.com");
         user.setPassword("pw");
+        User saved = userService.createUser(user);
 
-        userService.createUser(user);
+        // Step 2: Update only the email
+        saved.setEmail("new@example.com");
+        userService.updateUser(saved);
 
-        user.setEmail("new@example.com");
-        userService.updateUser(user);
-
+        // Step 3: Verify
         Optional<User> result = userRepository.findByUsername(username);
         assertTrue(result.isPresent());
         assertEquals("new@example.com", result.get().getEmail());
     }
+
 
     @Test
     void _11_27_resetPassword_success() {
@@ -124,5 +127,4 @@ public class UserServiceImplInteTest {
 
     //     assertTrue(userRepository.findByUsername(username).isPresent());
     // }
-
 }
