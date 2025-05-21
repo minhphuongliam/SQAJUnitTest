@@ -45,7 +45,7 @@ class UserDetailsImplTest {
     @DisplayName("Getter methods")
     class GetterTests {
 
-        // 8.1 Get the list of Authorities
+        // 10.1 Get the list of Authorities
         @Test
         void getAuthorities_shouldReturnMappedAuthorities() {
             List<GrantedAuthority> expected = List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
@@ -53,7 +53,7 @@ class UserDetailsImplTest {
             assertEquals(expected, details.getAuthorities());
         }
 
-        // (bonus) – nhiều quyền, không nằm trong danh sách 8.x nhưng giữ lại để branch‑coverage
+        // (bonus) – nhiều quyền, không nằm trong danh sách 10.x nhưng giữ lại để branch‑coverage
         @Test
         void getAuthorities_withTwoRoles_returnsBoth() {
             Role roleStudent = new Role();
@@ -69,25 +69,25 @@ class UserDetailsImplTest {
                     Set.copyOf(twoRoles.getAuthorities()));
         }
 
-        // 8.2 Retrieve ID
+        // 10.2 Retrieve ID
         @Test
         void getId_shouldReturnUserId() {
             assertEquals(1L, details.getId());
         }
 
-        // 8.3 Retrieve Email
+        // 10.3 Retrieve Email
         @Test
         void getEmail_shouldReturnEmail() {
             assertEquals("test@example.com", details.getEmail());
         }
 
-        // 8.4 Retrieve Password
+        // 10.4 Retrieve Password
         @Test
         void getPassword_shouldReturnPassword() {
             assertEquals("hashed", details.getPassword());
         }
 
-        // 8.5 Retrieve Username
+        // 10.5 Retrieve Username
         @Test
         void getUsername_shouldReturnUsername() {
             assertEquals("johnDoe", details.getUsername());
@@ -99,31 +99,31 @@ class UserDetailsImplTest {
     @DisplayName("Account flags")
     class AccountFlagTests {
 
-        // 8.6 isAccountNonExpired
+        // 10.6 isAccountNonExpired
         @Test
         void isAccountNonExpired_isAlwaysTrue() {
             assertTrue(details.isAccountNonExpired());
         }
 
-        // 8.7 isAccountNonLocked
+        // 10.7 isAccountNonLocked
         @Test
         void isAccountNonLocked_isAlwaysTrue() {
             assertTrue(details.isAccountNonLocked());
         }
 
-        // 8.8 isCredentialsNonExpired
+        // 10.8 isCredentialsNonExpired
         @Test
         void isCredentialsNonExpired_isAlwaysTrue() {
             assertTrue(details.isCredentialsNonExpired());
         }
 
-        // 8.9 isEnabled
+        // 10.9 isEnabled
         @Test
         void isEnabled_isAlwaysTrue() {
             assertTrue(details.isEnabled());
         }
 
-        // 8.10 equals() – same reference
+        // 10.10 equals() – same reference
         @Test
         void equals_sameReference_returnsTrue() {
             assertTrue(details.equals(details));
@@ -135,31 +135,31 @@ class UserDetailsImplTest {
     @DisplayName("equals()")
     class EqualsTests {
 
-        // 8.13 equals() – same ID
+        // 10.13 equals() – same ID
         @Test
         void equals_sameId_returnsTrue() {
             UserDetailsImpl other = new UserDetailsImpl(1L, "other", "o@e.com", "pw", List.of());
             assertEquals(details, other);
         }
 
-        // 8.14 equals() – different ID
+        // 10.14 equals() – different ID
         @Test
         void equals_differentId_returnsFalse() {
             UserDetailsImpl other = new UserDetailsImpl(2L, "johnDoe", "test@example.com", "hashed", List.of());
             assertNotEquals(details, other);
         }
 
-        // 8.11 & 8.12 equals() – null object & different class
+        // 10.11 & 10.12 equals() – null object & different class
         @Test
         void equals_nullOrDifferentClass_returnsFalse() {
-            assertNotEquals(details, null);      // 8.11
-            assertNotEquals(details, "string"); // 8.12
+            assertNotEquals(details, null);      // 10.11
+            assertNotEquals(details, "string"); // 10.12
         }
     }
 
     /* ------------------ build(User) static ------------------ */
 
-    // 8.15 build(User user) – basic user
+    // 10.15 build(User user) – basic user
     @Test
     @DisplayName("build(User) phải map đúng các trường & authority")
     void build_mapsAllFieldsCorrectly() {
@@ -180,7 +180,7 @@ class UserDetailsImplTest {
         verifyNoMoreInteractions(mockUser);
     }
 
-    // 8.16 build(User user) – user with no roles
+    // 10.16 build(User user) – user with no roles
     @Test
     void build_withEmptyRoles_resultsInEmptyAuthorities() {
         when(mockUser.getRoles()).thenReturn(Set.of());
