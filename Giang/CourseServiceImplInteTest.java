@@ -27,27 +27,29 @@ public class CourseServiceImplInteTest {
     private CourseRepository courseRepository;
 
     private String generateCourseCode(String base) {
-        return base + "_" + UUID.randomUUID().toString().substring(0, 6);
+        return base + "_" + UUID.randomUUID().toString().substring(0, Math.max(0, 10 - base.length() - 1));
     }
 
-    // @Test
-    // void _12_7_saveCourse() {
-    //     String code = generateCourseCode("CS202");
 
-    //     Course course = new Course();
-    //     course.setCourseCode(code);
-    //     course.setCourseName("Database");
+    @Test
+    void _12_7_saveCourse() {
+        String code = generateCourseCode("CS202");
 
-    //     courseService.saveCourse(course);
+        Course course = new Course();
+        course.setCourseCode(code);
+        course.setName("Database");
 
-    //     List<Course> allCourses = courseRepository.findAll();
-    //     boolean exists = allCourses.stream().anyMatch(c -> code.equals(c.getCourseCode()));
-    //     assertTrue(exists);
-    // }
+        courseService.saveCourse(course);
+
+        List<Course> allCourses = courseRepository.findAll();
+        boolean exists = allCourses.stream().anyMatch(c -> code.equals(c.getCourseCode()));
+        assertTrue(exists);
+    }
 
     @Test
     void _12_8_deleteCourse_existingId() {
-        String code = generateCourseCode("DEL101");
+        String code = "DEL" + UUID.randomUUID().toString().substring(0, 4);
+;
 
         Course course = new Course();
         course.setCourseCode(code);
@@ -60,7 +62,7 @@ public class CourseServiceImplInteTest {
 
     @Test
     void _12_9_deleteCourse_nonExistingId() {
-        // Should not throw error when ID doesn't exist
         courseService.delete(99999L);
     }
+
 }
